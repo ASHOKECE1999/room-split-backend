@@ -68,6 +68,7 @@ authRouter.post("/login", async (req, res) => {
       const token = res.cookie("jwtToken", jwtToken);
       res.json({
         message: userExits.fullName + "you have SuccessFully logged In",
+        data: userExits,
       });
     } else {
       throw new Error("Invalid Passowrd");
@@ -76,6 +77,13 @@ authRouter.post("/login", async (req, res) => {
   } catch (error) {
     res.status(401).send(error.message);
   }
+});
+
+authRouter.post("/logout", async (req, res) => {
+  // set cookies expired data immidiatly
+  console.log("hit here");
+  res.cookie("jwtToken", null, { expires: new Date(Date.now()) });
+  res.send("SuccessFullyLogout");
 });
 
 module.exports = authRouter;
